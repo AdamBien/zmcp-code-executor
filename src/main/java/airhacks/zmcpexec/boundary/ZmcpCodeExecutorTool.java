@@ -1,5 +1,6 @@
 package airhacks.zmcpexec.boundary;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -13,6 +14,21 @@ import airhacks.zmcpexec.entity.ToolMetadata;
  * for dynamic tool discovery and execution.
  */
 public class ZmcpCodeExecutorTool implements Function<Map<String, Object>, Map<String, String>> {
+    
+    public static final Map<String, Object> TOOL_SPEC = Map.of(
+        "name", "execute_java_code",
+        "description", "Executes Java code using JShell and returns the result",
+        "inputSchema", Map.of(
+            "type", "object",
+            "properties", Map.of(
+                "code", Map.of(
+                    "type", "string",
+                    "description", "Java code to execute"
+                )
+            ),
+            "required", List.of("code")
+        )
+    );
     
     private final CodeExecutor codeExecutor;
     

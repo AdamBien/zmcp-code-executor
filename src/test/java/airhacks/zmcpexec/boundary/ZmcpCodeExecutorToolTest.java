@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import airhacks.zmcpexec.boundary.ZmcpCodeExecutorTool;
 
+import java.util.List;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.*;
 
@@ -80,5 +81,24 @@ class ZmcpCodeExecutorToolTest {
         assertThat(result.get("success")).isEqualTo("true");
         assertThat(result.get("output")).isEqualTo("15");
         assertThat(result.get("error")).isNull();
+    }
+    
+    @Test
+    void toolSpecContainsRequiredFields() {
+        var toolSpec = ZmcpCodeExecutorTool.TOOL_SPEC;
+        
+        assertThat(toolSpec.get("name")).isEqualTo("execute_java_code");
+        assertThat(toolSpec.get("description")).isEqualTo("Executes Java code using JShell and returns the result");
+        
+        var inputSchema = (Map<String, Object>) toolSpec.get("inputSchema");
+        assertThat(inputSchema.get("type")).isEqualTo("object");
+        
+        var properties = (Map<String, Object>) inputSchema.get("properties");
+        var codeProperty = (Map<String, Object>) properties.get("code");
+        assertThat(codeProperty.get("type")).isEqualTo("string");
+        assertThat(codeProperty.get("description")).isEqualTo("Java code to execute");
+        
+        var required = (List<String>) inputSchema.get("required");
+        assertThat(required).containsExactly("code");
     }
 }
