@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import airhacks.zmcpexec.control.CodeExecutor;
+import airhacks.zmcpexec.control.ToolSpec;
 import airhacks.zmcpexec.entity.ToolMetadata;
 
 /**
@@ -15,20 +16,8 @@ import airhacks.zmcpexec.entity.ToolMetadata;
  */
 public class ZmcpCodeExecutorTool implements Function<Map<String, Object>, Map<String, String>> {
     
-    public static final Map<String, Object> TOOL_SPEC = Map.of(
-        "name", "execute_java_code",
-        "description", "Executes Java code using JShell and returns the result",
-        "inputSchema", Map.of(
-            "type", "object",
-            "properties", Map.of(
-                "code", Map.of(
-                    "type", "string",
-                    "description", "Java code to execute"
-                )
-            ),
-            "required", List.of("code")
-        )
-    );
+    static Map<String, String> TOOL_SPEC = ToolSpec.singleRequiredParameter("execute_java_code","Executes Java code using JShell and returns the result");
+    
     
     private final CodeExecutor codeExecutor;
     
